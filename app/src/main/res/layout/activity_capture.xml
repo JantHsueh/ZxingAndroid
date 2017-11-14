@@ -70,4 +70,34 @@
             android:background="@drawable/shadow" />
     </RelativeLayout>
 
+
+    <TextView
+        android:id="@+id/btn_scan_local_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_scan_local_pic"
+        android:textSize="12sp"
+        android:textColor="@color/common_content_bg_white"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:layout_above="@+id/btn_open_flashlight"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        />
+
+    <TextView
+        android:id="@+id/btn_open_flashlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_open_flashlight_text"
+        android:textSize="12sp"
+        android:textColor="@color/common_content_bg_white"
+        android:drawableTop="@drawable/btn_scan_flashlight"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        />
+
 </RelativeLayout>

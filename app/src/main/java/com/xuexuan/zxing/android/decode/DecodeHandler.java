@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexuan.zxing.android;
+package com.xuexuan.zxing.android.decode;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -32,6 +32,8 @@ import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.xuexuan.zxing.android.R;
+import com.xuexuan.zxing.android.activity.CaptureActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -120,7 +122,7 @@ final class DecodeHandler extends Handler {
             if (handler != null) {
                 Message message = Message.obtain(handler, R.id.decode_succeeded, rawResult);
                 Bundle bundle = new Bundle();
-                bundleThumbnail(source, bundle);
+//                bundleThumbnail(source, bundle);
                 message.setData(bundle);
                 message.sendToTarget();
             }

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.xuexuan.zxing.android;
+package com.xuexuan.zxing.android.decode;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.xuexuan.zxing.android.R;
+import com.xuexuan.zxing.android.activity.CaptureActivity;
 import com.xuexuan.zxing.android.camera.CameraManager;
 
 import java.util.Collection;
@@ -50,10 +50,10 @@ public final class CaptureActivityHandler extends Handler {
         DONE
     }
 
-    CaptureActivityHandler(CaptureActivity activity,
-                           Collection<BarcodeFormat> decodeFormats,
-                           String characterSet,
-                           CameraManager cameraManager) {
+    public CaptureActivityHandler(CaptureActivity activity,
+                                  Collection<BarcodeFormat> decodeFormats,
+                                  String characterSet,
+                                  CameraManager cameraManager) {
         this.activity = activity;
         decodeThread = new DecodeThread(activity, decodeFormats, characterSet);
         decodeThread.start();
@@ -74,18 +74,7 @@ public final class CaptureActivityHandler extends Handler {
             case R.id.decode_succeeded:
                 state = State.SUCCESS;
                 Bundle bundle = message.getData();
-                Bitmap barcode = null;
-                float scaleFactor = 1.0f;
-                if (bundle != null) {
-                    byte[] compressedBitmap = bundle.getByteArray(DecodeThread.BARCODE_BITMAP);
-                    if (compressedBitmap != null) {
-                        barcode = BitmapFactory.decodeByteArray(compressedBitmap, 0, compressedBitmap.length, null);
-                        // Mutable copy:
-                        barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
-                    }
-                    scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
-                }
-                activity.handleDecode((Result) message.obj, barcode, scaleFactor);
+                activity.handleDecode((Result) message.obj);
                 break;
             case R.id.decode_failed:
                 // We're decoding as fast as possible, so when one decode fails, start another.

@@ -7,6 +7,8 @@ android {
         applicationId "com.xuexuan.zxing.android"
         minSdkVersion 19
         targetSdkVersion 22
+        versionName "4.7.8"
+        versionCode  108
     }
 
     buildTypes {
@@ -19,5 +21,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+
     implementation files('libs/core-3.3.2-SNAPSHOT.jar')
 }

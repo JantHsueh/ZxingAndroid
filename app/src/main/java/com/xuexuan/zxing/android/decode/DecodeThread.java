@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexuan.zxing.android;
+package com.xuexuan.zxing.android.decode;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
+import com.xuexuan.zxing.android.activity.CaptureActivity;
 
 import java.util.Collection;
 import java.util.EnumMap;

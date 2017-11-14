@@ -51,9 +51,7 @@ final class CameraConfigurationManager {
 
     private final Context context;
     private int cwNeededRotation;
-    private int cwRotationFromDisplayToCamera;
     private Point screenResolution;
-//    private Point cameraResolution;
     private Point bestPreviewSize;
     private Point previewSizeOnScreen;
 
@@ -224,9 +222,6 @@ final class CameraConfigurationManager {
             }
         }
     }
-
-
-
 
     /**
      * 设置曝光补偿指数

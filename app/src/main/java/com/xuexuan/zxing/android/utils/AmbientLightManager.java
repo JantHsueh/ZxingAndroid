@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexuan.zxing.android;
+package com.xuexuan.zxing.android.utils;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -31,7 +31,7 @@ import com.xuexuan.zxing.android.camera.CameraManager;
  * @author Sean Owen
  * @author Nikolaus Huber
  */
-final class AmbientLightManager implements SensorEventListener {
+public final class AmbientLightManager implements SensorEventListener {
 
     private static final float TOO_DARK_LUX = 45.0f;
     private static final float BRIGHT_ENOUGH_LUX = 450.0f;
@@ -40,11 +40,11 @@ final class AmbientLightManager implements SensorEventListener {
     private CameraManager cameraManager;
     private Sensor lightSensor;
 
-    AmbientLightManager(Context context) {
+    public AmbientLightManager(Context context) {
         this.context = context;
     }
 
-    void start(CameraManager cameraManager) {
+    public void start(CameraManager cameraManager) {
         this.cameraManager = cameraManager;
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -54,7 +54,7 @@ final class AmbientLightManager implements SensorEventListener {
 
     }
 
-    void stop() {
+    public void stop() {
         if (lightSensor != null) {
             SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             sensorManager.unregisterListener(this);

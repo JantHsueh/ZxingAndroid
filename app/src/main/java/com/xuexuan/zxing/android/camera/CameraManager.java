@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.xuexuan.zxing.android.activity.CaptureActivity;
+
 import java.io.IOException;
 
 /**
@@ -224,23 +226,14 @@ public final class CameraManager {
     }
 
     /**
-     * Convenience method for {@link com.google.zxing.client.android.CaptureActivity}
+     * Convenience method for {@link CaptureActivity}
      *
      * @param newSetting if {@code true}, light should be turned on if currently off. And vice versa.
      */
     public synchronized void setTorch(boolean newSetting) {
         Camera theCamera = camera;
         if (theCamera != null && newSetting != configManager.getTorchState(theCamera)) {
-            boolean wasAutoFocusManager = autoFocusManager != null;
-            if (wasAutoFocusManager) {
-                autoFocusManager.stop();
-                autoFocusManager = null;
-            }
             configManager.setTorch(theCamera, newSetting);
-            if (wasAutoFocusManager) {
-                autoFocusManager = new AutoFocusManager(context, theCamera);
-                autoFocusManager.start();
-            }
         }
     }
 
