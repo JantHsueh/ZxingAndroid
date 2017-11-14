@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.zxing.client.android;
+package com.xuexuan.zxing.android;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,7 +38,7 @@ import android.widget.RelativeLayout;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.google.zxing.client.android.camera.CameraManager;
+import com.xuexuan.zxing.android.camera.CameraManager;
 
 import java.io.IOException;
 import java.util.Collection;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.zxing.client.android;
+package com.xuexuan.zxing.android;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -22,7 +22,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.google.zxing.client.android.camera.CameraManager;
+import com.xuexuan.zxing.android.camera.CameraManager;
+
 
 /**
  * Detects ambient light and switches on the front light when very dark, and off again when sufficiently light.

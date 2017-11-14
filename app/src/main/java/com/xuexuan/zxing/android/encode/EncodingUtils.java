@@ -1,4 +1,4 @@
-package com.google.zxing.client.android.encode;
+package com.xuexuan.zxing.android.encode;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

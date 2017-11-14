@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.zxing.client.android;
+package com.xuexuan.zxing.android;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
