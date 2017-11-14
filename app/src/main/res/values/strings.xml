@@ -15,5 +15,5 @@
  limitations under the License.
  -->
 <resources>
-  <string name="zxing_bar_name">ZxingLib</string>
+  <string name="zxing_bar_name">Android Zxing</string>
 </resources>

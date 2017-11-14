@@ -17,6 +17,7 @@
 package com.google.zxing.client.android;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -78,11 +79,28 @@ final class DecodeHandler extends Handler {
     private void decode(byte[] data, int width, int height) {
         long start = System.currentTimeMillis();
         Result rawResult = null;
+
+        Point size = activity.getCameraManager().getBestPreviewSize();
+
+        // 将获取的data翻转一下，因为预览画面是横屏显示的
+        byte[] rotatedData = rotateYUV420Degree90(data, size.x, size.y);
+
+        // 宽高也要调整
+        int previewSizeX = size.y;
+        int previewSizeY = size.x;
+
+//        YuvImage image = new YuvImage(rotatedData, ImageFormat.NV21, size.y, size.x, null);
+//        ByteArrayOutputStream os = new ByteArrayOutputStream(rotatedData.length);
+//        if (!image.compressToJpeg(new Rect(0, 0, size.y, size.x), 100, os)) {
+//            return;
+//        }
+//        byte[] tmp = os.toByteArray();
+//        Bitmap lCameraBitmap = BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
+
         Rect rect = activity.getCropRect();
-        PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
+        PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(rotatedData, previewSizeX, previewSizeY, rect.left, rect.top,
                 rect.width(), rect.height(), false);
-//        PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(data, width, height, 0, 0,
-//                width, height, false);
+
         if (source != null) {
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
             try {
@@ -113,6 +131,30 @@ final class DecodeHandler extends Handler {
             }
         }
     }
+
+    private byte[] rotateYUV420Degree90(byte[] data, int imageWidth, int imageHeight) {
+        byte[] yuv = new byte[imageWidth * imageHeight * 3 / 2];
+        // Rotate the Y luma
+        int i = 0;
+        for (int x = 0; x < imageWidth; x++) {
+            for (int y = imageHeight - 1; y >= 0; y--) {
+                yuv[i] = data[y * imageWidth + x];
+                i++;
+            }
+        }
+        // Rotate the U and V color components
+        i = imageWidth * imageHeight * 3 / 2 - 1;
+        for (int x = imageWidth - 1; x > 0; x = x - 2) {
+            for (int y = 0; y < imageHeight / 2; y++) {
+                yuv[i] = data[(imageWidth * imageHeight) + (y * imageWidth) + x];
+                i--;
+                yuv[i] = data[(imageWidth * imageHeight) + (y * imageWidth) + (x - 1)];
+                i--;
+            }
+        }
+        return yuv;
+    }
+
 
     private static void bundleThumbnail(PlanarYUVLuminanceSource source, Bundle bundle) {
         int[] pixels = source.renderThumbnail();

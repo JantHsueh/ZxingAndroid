@@ -41,7 +41,6 @@ import com.google.zxing.Result;
 import com.google.zxing.client.android.camera.CameraManager;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Collection;
 
 /**
@@ -286,10 +285,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      * 初始化截取的矩形区域
      */
     private void initCrop() {
-        int cameraWidth = cameraManager.getCameraResolution().y;
-        int cameraHeight = cameraManager.getCameraResolution().x;
+        int cameraWidth = cameraManager.getBestPreviewSize().y;
+        int cameraHeight = cameraManager.getBestPreviewSize().x;
 
-        /** 获取布局中扫描框的位置信息 */
+        /** 获取布局中扫描框的位置和宽高 */
         int[] location = new int[2];
         scanCropView.getLocationInWindow(location);
 
@@ -323,11 +322,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     private int getStatusBarHeight() {
         try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            return frame.top;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,18 +16,11 @@
 
 package com.google.zxing.client.android.camera;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
-import java.io.ByteArrayOutputStream;
 
 @SuppressWarnings("deprecation") // camera APIs
 final class PreviewCallback implements Camera.PreviewCallback {
@@ -51,14 +44,7 @@ final class PreviewCallback implements Camera.PreviewCallback {
     public void onPreviewFrame(byte[] data, Camera camera) {
         Point cameraResolution = configManager.getBestPreviewSize();
         Handler thePreviewHandler = previewHandler;
-        YuvImage image = new YuvImage(data, ImageFormat.NV21, cameraResolution.x, cameraResolution.y, null);
-        ByteArrayOutputStream os = new ByteArrayOutputStream(data.length);
-        if (!image.compressToJpeg(new Rect(0, 0, cameraResolution.x, cameraResolution.y), 100, os)) {
-            return;
-        }
-        byte[] tmp = os.toByteArray();
-        Bitmap lCameraBitmap = BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
-        if (cameraResolution != null && thePreviewHandler != null) {
+        if(cameraResolution != null && thePreviewHandler != null) {
             Message message = thePreviewHandler.obtainMessage(previewMessage, cameraResolution.x,
                     cameraResolution.y, data);
             message.sendToTarget();

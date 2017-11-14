@@ -64,6 +64,7 @@ final class CameraConfigurationManager {
 
     /**
      * Reads, one time, values from the camera that are needed by the app.
+     * 计算相机的顺时针旋转角度，最近屏幕分辨率
      */
     void initFromCameraParameters(Camera camera,int cameraID) {
         Camera.Parameters parameters = camera.getParameters();
@@ -133,6 +134,11 @@ final class CameraConfigurationManager {
         Log.i(TAG, "Preview size on screen: " + previewSizeOnScreen);
     }
 
+    /**
+     * 设置相机参数
+     * @param theCamera
+     * @param safeMode
+     */
     void setDesiredCameraParameters(Camera theCamera, boolean safeMode) {
 
         Camera.Parameters parameters = theCamera.getParameters();
@@ -249,7 +255,7 @@ final class CameraConfigurationManager {
         }
     }
 
-    public void setBestPreviewFPS(Camera.Parameters parameters) {
+    public void  setBestPreviewFPS(Camera.Parameters parameters) {
         setBestPreviewFPS(parameters, MIN_FPS, MAX_FPS);
     }
 
@@ -472,7 +478,7 @@ final class CameraConfigurationManager {
             }
 
             //是否待选择竖屏,Width 选择数值较大的，
-            boolean isCandidatePortrait = realWidth < realHeight;
+            boolean isCandidatePortrait = realWidth > realHeight;
             int maybeFlippedWidth = isCandidatePortrait ? realHeight : realWidth;
             int maybeFlippedHeight = isCandidatePortrait ? realWidth : realHeight;
             double aspectRatio = maybeFlippedWidth / (double) maybeFlippedHeight;

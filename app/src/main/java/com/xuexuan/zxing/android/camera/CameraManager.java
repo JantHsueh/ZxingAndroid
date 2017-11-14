@@ -48,7 +48,6 @@ public final class CameraManager {
     private Camera camera;
     private AutoFocusManager autoFocusManager;
     private Rect framingRect;
-    private Rect framingRectInPreview;
     private boolean initialized;
     private boolean previewing;
     private int requestedCameraId = NO_REQUESTED_CAMERA;
@@ -184,7 +183,6 @@ public final class CameraManager {
     }
 
 
-
     /**
      * Closes the camera driver if still in use.
      */
@@ -195,7 +193,6 @@ public final class CameraManager {
             // Make sure to clear these each time we close the camera, so that any scanning rect
             // requested by intent is forgotten.
             framingRect = null;
-            framingRectInPreview = null;
         }
     }
 
@@ -263,14 +260,6 @@ public final class CameraManager {
         }
     }
 
-    /**
-     * 获取相机分辨率
-     *
-     * @return
-     */
-    public Point getCameraResolution() {
-        return configManager.getBestPreviewSize();
-    }
 
     private static int findDesiredDimensionInRange(int resolution, int hardMin, int hardMax) {
         int dim = 5 * resolution / 8; // Target 5/8 of each dimension
@@ -313,10 +302,20 @@ public final class CameraManager {
             int topOffset = (screenResolution.y - height) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
             Log.d(TAG, "Calculated manual framing rect: " + framingRect);
-            framingRectInPreview = null;
         } else {
             requestedFramingRectWidth = width;
             requestedFramingRectHeight = height;
         }
     }
+
+    /**
+     * 获取相机分辨率
+     *
+     * @return
+     */
+    public Point getBestPreviewSize() {
+        return configManager.getBestPreviewSize();
+    }
+
+
 }
