@@ -223,33 +223,6 @@ final class CameraConfigurationManager {
         }
     }
 
-    /**
-     * 设置曝光补偿指数
-     * @param parameters
-     * @param lightOn
-     */
-    public static void setBestExposure(Camera.Parameters parameters, boolean lightOn) {
-        int minExposure = parameters.getMinExposureCompensation();
-        int maxExposure = parameters.getMaxExposureCompensation();
-        float step = parameters.getExposureCompensationStep();
-        if ((minExposure != 0 || maxExposure != 0) && step > 0.0f) {
-            // Set low when light is on
-            float targetCompensation = lightOn ? MIN_EXPOSURE_COMPENSATION : MAX_EXPOSURE_COMPENSATION;
-            int compensationSteps = Math.round(targetCompensation / step);
-            float actualCompensation = step * compensationSteps;
-            // Clamp value:
-            compensationSteps = Math.max(Math.min(compensationSteps, maxExposure), minExposure);
-            if (parameters.getExposureCompensation() == compensationSteps) {
-                Log.i(TAG, "Exposure compensation already set to " + compensationSteps + " / " + actualCompensation);
-            } else {
-                Log.i(TAG, "Setting exposure compensation to " + compensationSteps + " / " + actualCompensation);
-                parameters.setExposureCompensation(compensationSteps);
-            }
-        } else {
-            Log.i(TAG, "Camera does not support exposure compensation");
-        }
-    }
-
     public void  setBestPreviewFPS(Camera.Parameters parameters) {
         setBestPreviewFPS(parameters, MIN_FPS, MAX_FPS);
     }
@@ -414,25 +387,6 @@ final class CameraConfigurationManager {
         }
     }
 
-
-
-    private static String findSettableValue(String name,
-                                            Collection<String> supportedValues,
-                                            String... desiredValues) {
-        Log.i(TAG, "Requesting " + name + " value from among: " + Arrays.toString(desiredValues));
-        Log.i(TAG, "Supported " + name + " values: " + supportedValues);
-        if (supportedValues != null) {
-            for (String desiredValue : desiredValues) {
-                if (supportedValues.contains(desiredValue)) {
-                    Log.i(TAG, "Can set " + name + " to: " + desiredValue);
-                    return desiredValue;
-                }
-            }
-        }
-        Log.i(TAG, "No supported values match");
-        return null;
-    }
-
     /**
      * 寻找最佳预览尺寸
      * @param parameters
@@ -549,16 +503,17 @@ final class CameraConfigurationManager {
         return false;
     }
 
-    void setTorch(Camera camera, boolean newSetting) {
+    public void setTorch(Camera camera, boolean newSetting) {
         Camera.Parameters parameters = camera.getParameters();
-        doSetTorch(parameters, newSetting, false);
+        doSetTorch(parameters, newSetting);
         camera.setParameters(parameters);
     }
 
 
-    private void doSetTorch(Camera.Parameters parameters, boolean newSetting, boolean safeMode) {
+    private void doSetTorch(Camera.Parameters parameters, boolean newSetting) {
         setTorch(parameters, newSetting);
-        if (!safeMode && true) {
+        if (false) {
+            //关闭曝光补偿
             setBestExposure(parameters, newSetting);
         }
     }
@@ -589,6 +544,51 @@ final class CameraConfigurationManager {
                 parameters.setFlashMode(flashMode);
             }
         }
+    }
+
+    /**
+     * 设置曝光补偿指数
+     * @param parameters
+     * @param lightOn
+     */
+    public static void setBestExposure(Camera.Parameters parameters, boolean lightOn) {
+        int minExposure = parameters.getMinExposureCompensation();
+        int maxExposure = parameters.getMaxExposureCompensation();
+        float step = parameters.getExposureCompensationStep();
+        if ((minExposure != 0 || maxExposure != 0) && step > 0.0f) {
+            // Set low when light is on
+            float targetCompensation = lightOn ? MIN_EXPOSURE_COMPENSATION : MAX_EXPOSURE_COMPENSATION;
+            int compensationSteps = Math.round(targetCompensation / step);
+            float actualCompensation = step * compensationSteps;
+            // Clamp value:
+            compensationSteps = Math.max(Math.min(compensationSteps, maxExposure), minExposure);
+            if (parameters.getExposureCompensation() == compensationSteps) {
+                Log.i(TAG, "Exposure compensation already set to " + compensationSteps + " / " + actualCompensation);
+            } else {
+                Log.i(TAG, "Setting exposure compensation to " + compensationSteps + " / " + actualCompensation);
+                parameters.setExposureCompensation(compensationSteps);
+            }
+        } else {
+            Log.i(TAG, "Camera does not support exposure compensation");
+        }
+    }
+
+
+    private static String findSettableValue(String name,
+                                            Collection<String> supportedValues,
+                                            String... desiredValues) {
+        Log.i(TAG, "Requesting " + name + " value from among: " + Arrays.toString(desiredValues));
+        Log.i(TAG, "Supported " + name + " values: " + supportedValues);
+        if (supportedValues != null) {
+            for (String desiredValue : desiredValues) {
+                if (supportedValues.contains(desiredValue)) {
+                    Log.i(TAG, "Can set " + name + " to: " + desiredValue);
+                    return desiredValue;
+                }
+            }
+        }
+        Log.i(TAG, "No supported values match");
+        return null;
     }
 
 
