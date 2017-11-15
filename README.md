@@ -33,9 +33,11 @@
 
 
 ## ZXingLib项目
-MainActivity和CaptureActivity是参考徐医生的这个项目，https://github.com/xuyisheng/ZXingLib
+
+MainActivity和CaptureActivity是参考徐医生的这个项目https://github.com/xuyisheng/ZXingLib
 这个项目存在一些缺陷：
-1、预览画面的旋转，他固定为90度，在一些机型上会运行不正常
-2、获取预览帧，把yuv数据旋转90度，处理方式不正确。这行导致扫描效果差
-3、在小米6上，相机打不开
+1. 预览画面的旋转，他固定为90度，在一些机型上会运行不正常
+2. 获取预览帧，把yuv数据旋转90度，处理方式不正确。这行导致扫描效果差
+
+
 
